@@ -1,7 +1,9 @@
 # MA615_proj_f
 
-# data
-## Airbnb
-## Yelp
+# data cleaning process is in the file 'MA615_data_cleaning_wrangling.R'
+## Airbnb data
 
-# build shiny app
+### Shiny app is in the folder named 'final_shiny'
+# Shiny app includes an interactive map and text analyses(wordcloud)
+
+### The final report in slide is is in the folder 'final_slides'
