@@ -5,17 +5,22 @@
 #-----------------------------------------------------------------------------------------
 pacman::p_load("ggplot2","tidyverse","dplyr","tidyr","tinytex","magrittr","DT","readxl",
                "shiny","shinydashboard","plotly","readxl","abind","gridExtra","scales", "leaflet", "RColorBrewer",
-               "scales", "lattice", "leaflet.extras", "htmlwidgets", "maps")
+               "scales", "lattice", "leaflet.extras", "htmlwidgets", "maps","tidytext","wordcloud","stringr")
+
+pal2 <- brewer.pal(3, "Dark2")
+get_sentiments("afinn")
+get_sentiments("bing")
+get_sentiments("nrc")
 #-----------------------------------------------------------------------------------------
 # Import Airbnb listing data
 load("bos_data_list.RData")
 # Import Airbnb review data
-load("bos_data_review.RData")
-load("la_data_review.RData")
-load("ny_data_review.RData")
-load("hawa_data_review.RData")
+load("bos_data_review2.RData")
+load("la_data_review2.RData")
+load("ny_data_review2.RData")
+load("hawa_data_review2.RData")
 
-com_list %<>% mutate(neighborcity = paste0(neighbourhood, " (", region,")"))
+#com_list %<>% mutate(neighborcity = paste0(neighbourhood, " (", region,")"))
 ## ui ##----------------------------------------------------------------------------------
 ui <- fluidPage(
     navbarPage("Airbnb listings",
@@ -113,7 +118,7 @@ server <- function(input, output, session) {
             addAwesomeMarkers(~lon, ~lat, label = ~list_name, popup = ~as.character(list_name),
                              group = "Listings", icon=icons) %>%
             addScaleBar(position = "bottomleft") %>%   
-            addPolygons(data=bounds, group="States", weight=2, fillOpacity = 0) %>%
+            #addPolygons(data=bounds, group="States", weight=2, fillOpacity = 0) %>%
             addLayersControl(
                 baseGroups = c("Map", "Satellite", "Street", "Watercolor"),
                 overlayGroups = c("Listings"),
