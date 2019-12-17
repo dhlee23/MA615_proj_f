@@ -1,0 +1,240 @@
+---
+title: "MA615 Final Project"
+author: "Dae Hyun Lee"
+date: "12/16/2019"
+output: ioslides_presentation
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = F)
+options(tinytex.verbose = TRUE)
+pacman::p_load("ggplot2","tidyverse","dplyr","tidyr","tinytex","magrittr","DT","readxl",
+               "shiny","shinydashboard","plotly","readxl","abind","gridExtra","scales", "leaflet",
+               "RColorBrewer","scales", "lattice", "leaflet.extras", "htmlwidgets", "maps","knitr", "png",
+               "readr","textdata","tidytext", "wordcloud")
+pal2 <- brewer.pal(3, "Dark2")
+get_sentiments("afinn")
+get_sentiments("bing")
+get_sentiments("nrc")
+################################################
+load("combined_data_list.RData")
+load("bos_data_list.RData")
+load("la_data_list.RData")
+load("ny_data_list.RData")
+load("hawa_data_list.RData")
+################################################
+load("bos_data_review2.RData")
+load("ny_data_review2.RData")
+load("la_data_review2.RData")
+load("hawa_data_review2.RData")
+```
+
+## Figure 2.1 (Boston)
+```{r echo=FALSE,message=FALSE, warning=FALSE, fig.width=7, fig.height=3}
+####################
+max.x.2.1 <- 1000
+
+## Figure 2.1 (Boston)
+# boston listings
+f1.bos <- bos_list %>% dplyr::filter(price > 0 & price <= max.x.2.1) %>% filter(!is.na(price)) %>%
+  filter(room_type %in% c("Private room", "Entire home/apt","Shared room")) %>% 
+   ggplot(aes(price, fill = room_type)) +
+   geom_histogram(binwidth = 28) +
+   theme_classic() +
+   scale_fill_brewer(palette = "PuBuGn") +
+   scale_x_continuous(name ="Price per night in $", breaks = seq(0, max.x.2.1, by = 100)) +
+   scale_y_continuous(name="Count")+
+   ggtitle("Figure 2.1.(Boston):\n Distribution of the airbnb listings over price\n within Boston region in 2019") +
+   theme(plot.title = element_text(face="bold", size=12),
+         axis.title.y = element_text(face="bold",  size=14),
+         axis.text.y  = element_text(vjust=0.5, size=7),
+         axis.title.x = element_text(face="bold",  size=14),
+         axis.text.x  = element_text(vjust=0.5, size=7)) +
+   theme(plot.title = element_text(hjust = 0.5))  +
+   labs(fill="Type of Airbnb room") + ylim(0, 600)
+
+f1.bos
+```
+
+
+## Figure 2.1 (NYC)
+```{r echo=FALSE,message=FALSE, warning=FALSE, fig.width=7, fig.height=3}
+## Figure 2.1 (New York city)
+# new york listings
+f1.ny <- ny_list %>% dplyr::filter(price > 0 & price <= max.x.2.1) %>% filter(!is.na(price)) %>%
+  filter(room_type %in% c("Private room", "Entire home/apt","Shared room")) %>% 
+   ggplot(aes(price, fill = room_type)) +
+   geom_histogram(binwidth = 28) +
+   theme_classic() +
+   scale_fill_brewer(palette = "PuBuGn") +
+   scale_x_continuous(name ="Price per night in $", breaks = seq(0, max.x.2.1, by = 100)) +
+   scale_y_continuous(name="Count")+
+   ggtitle("Figure 2.1.(NYC):\n Distribution of the airbnb listings over price\n within New York city region in 2019") +
+   theme(plot.title = element_text(face="bold", size=12),
+         axis.title.y = element_text(face="bold",  size=14),
+         axis.text.y  = element_text(vjust=0.5, size=7),
+         axis.title.x = element_text(face="bold",  size=14),
+         axis.text.x  = element_text(vjust=0.5, size=7)) +
+   theme(plot.title = element_text(hjust = 0.5))  +
+   labs(fill="Type of Airbnb room") + ylim(0, 600)
+
+f1.ny
+```
+
+## Figure 2.1 (LA)
+```{r echo=FALSE,message=FALSE, warning=FALSE, fig.width=7, fig.height=3}
+## Figure 2.1 (LA)
+# los angeles listings
+f1.la <- la_list %>% dplyr::filter(price > 0 & price <= max.x.2.1) %>% filter(!is.na(price)) %>%
+   filter(room_type %in% c("Private room", "Entire home/apt","Shared room")) %>% 
+   ggplot(aes(price, fill = room_type)) +
+   geom_histogram(binwidth = 28) +
+   theme_classic() +
+   scale_fill_brewer(palette = "PuBuGn") +
+   scale_x_continuous(name ="Price per night in $", breaks = seq(0, max.x.2.1, by = 100)) +
+   scale_y_continuous(name="Count")+
+   ggtitle("Figure 2.1.(LA):\n Distribution of the airbnb listings over price\n within Los Angeles region in 2019") +
+   theme(plot.title = element_text(face="bold", size=12),
+         axis.title.y = element_text(face="bold",  size=14),
+         axis.text.y  = element_text(vjust=0.5, size=7),
+         axis.title.x = element_text(face="bold",  size=14),
+         axis.text.x  = element_text(vjust=0.5, size=7)) +
+   theme(plot.title = element_text(hjust = 0.5))  +
+   labs(fill="Type of Airbnb room") + ylim(0, 600)
+f1.la
+```
+
+## Figure 2.1 (Hawaii)
+```{r echo=FALSE,message=FALSE, warning=FALSE, fig.width=7, fig.height=3}
+## Figure 2.1 (Hawaii)
+# hawaii listings
+f1.hawa <- hawa_list %>% dplyr::filter(price > 0 & price <= max.x.2.1) %>% filter(!is.na(price)) %>%
+  filter(room_type %in% c("Private room", "Entire home/apt","Shared room")) %>% 
+   ggplot(aes(price, fill = room_type)) +
+   geom_histogram(binwidth = 28) +
+   theme_classic() +
+   scale_fill_brewer(palette = "PuBuGn") +
+   scale_x_continuous(name ="Price per night in $", breaks = seq(0, max.x.2.1, by = 100)) +
+   scale_y_continuous(name="Count")+
+   ggtitle("Figure 2.1.(Hawaii):\n Distribution of the airbnb listings over price\n within Hawaii region in 2019") +
+   theme(plot.title = element_text(face="bold", size=12),
+         axis.title.y = element_text(face="bold",  size=14),
+         axis.text.y  = element_text(vjust=0.5, size=7),
+         axis.title.x = element_text(face="bold",  size=14),
+         axis.text.x  = element_text(vjust=0.5, size=7)) +
+   theme(plot.title = element_text(hjust = 0.5))  +
+   labs(fill="Type of Airbnb room") + ylim(0, 600)
+f1.hawa
+```
+
+## Figure 2.1 combined
+```{r echo=FALSE,message=FALSE, warning=FALSE, fig.width=7, fig.height=3}
+## Figure 2.1 combined
+gridExtra::grid.arrange(f1.bos, f1.ny, f1.la, f1.hawa, nrow = 2)
+```
+
+## Figure 2.2 (Boston)
+```{r echo=FALSE,message=FALSE, warning=FALSE, fig.width=7, fig.height=5}
+f2.bos <- bos_list %>% dplyr::filter(price > 0) %>% filter(!is.na(price)) %>%
+  filter(room_type %in% c("Private room", "Entire home/apt","Shared room")) %>%
+  filter(!is.na(price)) %>%
+  filter(!is.na(number_of_reviews)) %>%
+  ggplot() +
+  aes(y = number_of_reviews, x = log(price)) +
+  geom_point(size = 2L) +
+  theme_classic() +
+  ggtitle("Figure 2.2.(Boston):\n Number of reviews for the listings over log value of the price\n within Boston region in 2019") +
+  ylim(0, 700) + xlim(0,15)
+
+f2.bos
+```
+
+## Figure 2.2 (New York city)
+```{r echo=FALSE,message=FALSE, warning=FALSE, fig.width=7, fig.height=5}
+f2.ny <- ny_list %>% dplyr::filter(price > 0) %>% filter(!is.na(price)) %>%
+  filter(room_type %in% c("Private room", "Entire home/apt","Shared room")) %>%
+  filter(!is.na(price)) %>%
+  filter(!is.na(number_of_reviews)) %>%
+  ggplot() +
+  aes(y = number_of_reviews, x = log(price)) +
+  geom_point(size = 2L) +
+  theme_classic() +
+  ggtitle("Figure 2.2.(NYC):\n Number of reviews for the listings over log value of the price\n within New York city region in 2019") +
+  ylim(0, 700) + xlim(0,15)
+f2.ny
+```
+
+## Figure 2.2 (Los Angeles)
+```{r echo=FALSE,message=FALSE, warning=FALSE, fig.width=7, fig.height=5}
+f2.la <- la_list %>% dplyr::filter(price > 0) %>% filter(!is.na(price)) %>%
+  filter(room_type %in% c("Private room", "Entire home/apt","Shared room")) %>%
+  filter(!is.na(price)) %>%
+  filter(!is.na(number_of_reviews)) %>%
+  ggplot() +
+  aes(y = number_of_reviews, x = log(price)) +
+  geom_point(size = 2L) +
+  theme_classic() +
+  ggtitle("Figure 2.2.(LA):\n Number of reviews for the listings over log value of the price\n within Los Angeles region in 2019") +
+  ylim(0, 700) + xlim(0,15)
+f2.la
+```
+
+## Figure 2.2 (Hawaii)
+```{r echo=FALSE,message=FALSE, warning=FALSE, fig.width=7, fig.height=5}
+f2.hawa <- hawa_list %>% dplyr::filter(price > 0) %>% filter(!is.na(price)) %>%
+  filter(room_type %in% c("Private room", "Entire home/apt","Shared room")) %>%
+  filter(!is.na(price)) %>%
+  filter(!is.na(number_of_reviews)) %>%
+  ggplot() +
+  aes(y = number_of_reviews, x = log(price)) +
+  geom_point(size = 2L) +
+  theme_classic() +
+  ggtitle("Figure 2.2.(Hawaii):\n Number of reviews for the listings over log value of the price\n within Hawaii region in 2019") +
+  ylim(0, 700) + xlim(0,15)
+f2.hawa
+```
+
+## Figure 2.2 (combined)
+```{r echo=FALSE,message=FALSE, warning=FALSE, fig.width=7, fig.height=5}
+gridExtra::grid.arrange(f2.bos, f2.ny, f2.la, f2.hawa, nrow = 2)
+```
+
+```{r echo=FALSE,message=FALSE, warning=FALSE, fig.width=7, fig.height=7}
+
+```
+
+```{r echo=FALSE,message=FALSE, warning=FALSE, fig.width=7, fig.height=7}
+
+```
+
+```{r echo=FALSE,message=FALSE, warning=FALSE, fig.width=7, fig.height=7}
+
+```
+
+```{r echo=FALSE,message=FALSE, warning=FALSE, fig.width=7, fig.height=7}
+
+```
+
+```{r echo=FALSE,message=FALSE, warning=FALSE, fig.width=7, fig.height=7}
+
+```
+
+```{r echo=FALSE,message=FALSE, warning=FALSE, fig.width=7, fig.height=7}
+
+```
+
+```{r echo=FALSE,message=FALSE, warning=FALSE, fig.width=7, fig.height=7}
+
+```
+
+```{r echo=FALSE,message=FALSE, warning=FALSE, fig.width=7, fig.height=7}
+
+```
+
+```{r echo=FALSE,message=FALSE, warning=FALSE, fig.width=7, fig.height=7}
+
+```
+
+```{r echo=FALSE,message=FALSE, warning=FALSE, fig.width=7, fig.height=7}
+
+```
