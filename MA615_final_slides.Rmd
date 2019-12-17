@@ -40,9 +40,14 @@ As one of the travel buffs who love to travel, I use Airbnb a lot even more than
 Throughout the project, I look for investigating and proving a few research questions, such as "how are the airbnb listings in Boston area diffrent from the Airbnb listings in other regions."  
 
 The data I use for the project is collected from the site 'Inside Airbnb' http://insideairbnb.com/get-the-data.html, which provides more detailed Airbnb data than most of the other opensource Airbnb data websites does, such as Kaggle and Tomslee.  
+
 For this project, I compare Airbnb listings in Boston with Airbnb listings in three different regions: New York city, Los Angeles and Hawaii.  
 
 # Exploratory Data Analysis
+
+## Distribution of the listings in Boston, New York City, Los Angeles, and Hawaii.
+
+- Starts EDA by making plots for the data.
 
 ## Figure 1.1 (Boston)
 ```{r echo=FALSE,message=FALSE, warning=FALSE, fig.width=7, fig.height=3}
@@ -52,7 +57,7 @@ max.x.2.1 <- 1000
 bos_list %>% dplyr::filter(price > 0 & price <= max.x.2.1) %>% filter(!is.na(price)) %>%
   filter(room_type %in% c("Private room", "Entire home/apt","Shared room")) %>% 
    ggplot(aes(price, fill = room_type)) +
-   geom_histogram(binwidth = 28) +
+   geom_histogram(binwidth = 10) +
    theme_classic() +
    scale_fill_brewer(palette = "PuBuGn") +
    scale_x_continuous(name ="Price per night in $", breaks = seq(0, max.x.2.1, by = 100)) +
@@ -66,7 +71,7 @@ bos_list %>% dplyr::filter(price > 0 & price <= max.x.2.1) %>% filter(!is.na(pri
    labs(fill="Type of Airbnb room") + ylim(0, 600)
 ```
 
-rr
+It shows that the most number of airbnb listing type in boston is Entire home/apt. And, the distribution of the listings over price is rightly skewed.  
 
 ## Figure 1.2 (NYC)
 ```{r echo=FALSE,message=FALSE, warning=FALSE, fig.width=7, fig.height=3}
@@ -74,7 +79,7 @@ rr
 ny_list %>% dplyr::filter(price > 0 & price <= max.x.2.1) %>% filter(!is.na(price)) %>%
   filter(room_type %in% c("Private room", "Entire home/apt","Shared room")) %>% 
    ggplot(aes(price, fill = room_type)) +
-   geom_histogram(binwidth = 28) +
+   geom_histogram(binwidth = 10) +
    theme_classic() +
    scale_fill_brewer(palette = "PuBuGn") +
    scale_x_continuous(name ="Price per night in $", breaks = seq(0, max.x.2.1, by = 100)) +
@@ -89,7 +94,7 @@ ny_list %>% dplyr::filter(price > 0 & price <= max.x.2.1) %>% filter(!is.na(pric
    labs(fill="Type of Airbnb room") + ylim(0, 600)
 ```
 
-rrr
+This plot clearly shows that the median or the average prices of three different types of Airbnb listings in New York City are significantly different from each other.  
 
 ## Figure 1.3 (LA)
 ```{r echo=FALSE,message=FALSE, warning=FALSE, fig.width=7, fig.height=3}
@@ -97,7 +102,7 @@ rrr
 la_list %>% dplyr::filter(price > 0 & price <= max.x.2.1) %>% filter(!is.na(price)) %>%
    filter(room_type %in% c("Private room", "Entire home/apt","Shared room")) %>% 
    ggplot(aes(price, fill = room_type)) +
-   geom_histogram(binwidth = 28) +
+   geom_histogram(binwidth = 10) +
    theme_classic() +
    scale_fill_brewer(palette = "PuBuGn") +
    scale_x_continuous(name ="Price per night in $", breaks = seq(0, max.x.2.1, by = 100)) +
@@ -112,7 +117,7 @@ la_list %>% dplyr::filter(price > 0 & price <= max.x.2.1) %>% filter(!is.na(pric
    labs(fill="Type of Airbnb room") + ylim(0, 600)
 ```
 
-rrrrr
+The distribution of the airbnb listings over price in LA seems similar to that of New York City.  
 
 ## Figure 1.4 (Hawaii)
 ```{r echo=FALSE,message=FALSE, warning=FALSE, fig.width=7, fig.height=3}
@@ -135,14 +140,14 @@ hawa_list %>% dplyr::filter(price > 0 & price <= max.x.2.1) %>% filter(!is.na(pr
    labs(fill="Type of Airbnb room") + ylim(0, 600)
 ```
 
-rrrrrrr
+From this plot, I can infer that the overall price of Entire/apt is significantly higher than other two types of Airbnb room in Hawaii.  
 
 ## Figure 1.5 (combined)
 ```{r echo=FALSE,message=FALSE, warning=FALSE, fig.width=8, fig.height=3}
 f1.bos <- bos_list %>% dplyr::filter(price > 0 & price <= max.x.2.1) %>% filter(!is.na(price)) %>%
   filter(room_type %in% c("Private room", "Entire home/apt","Shared room")) %>% 
    ggplot(aes(price, fill = room_type)) +
-   geom_histogram(binwidth = 28) +
+   geom_histogram(binwidth = 14) +
    theme_classic() +
    scale_fill_brewer(palette = "PuBuGn") +
    scale_x_continuous(name ="Price per night in $", breaks = seq(0, max.x.2.1, by = 100)) +
@@ -159,7 +164,7 @@ f1.bos <- bos_list %>% dplyr::filter(price > 0 & price <= max.x.2.1) %>% filter(
 f1.ny <- ny_list %>% dplyr::filter(price > 0 & price <= max.x.2.1) %>% filter(!is.na(price)) %>%
   filter(room_type %in% c("Private room", "Entire home/apt","Shared room")) %>% 
    ggplot(aes(price, fill = room_type)) +
-   geom_histogram(binwidth = 28) +
+   geom_histogram(binwidth = 14) +
    theme_classic() +
    scale_fill_brewer(palette = "PuBuGn") +
    scale_x_continuous(name ="Price per night in $", breaks = seq(0, max.x.2.1, by = 100)) +
@@ -176,7 +181,7 @@ f1.ny <- ny_list %>% dplyr::filter(price > 0 & price <= max.x.2.1) %>% filter(!i
 f1.la <- la_list %>% dplyr::filter(price > 0 & price <= max.x.2.1) %>% filter(!is.na(price)) %>%
    filter(room_type %in% c("Private room", "Entire home/apt","Shared room")) %>% 
    ggplot(aes(price, fill = room_type)) +
-   geom_histogram(binwidth = 28) +
+   geom_histogram(binwidth = 14) +
    theme_classic() +
    scale_fill_brewer(palette = "PuBuGn") +
    scale_x_continuous(name ="Price per night in $", breaks = seq(0, max.x.2.1, by = 100)) +
@@ -193,7 +198,7 @@ f1.la <- la_list %>% dplyr::filter(price > 0 & price <= max.x.2.1) %>% filter(!i
 f1.hawa <- hawa_list %>% dplyr::filter(price > 0 & price <= max.x.2.1) %>% filter(!is.na(price)) %>%
   filter(room_type %in% c("Private room", "Entire home/apt","Shared room")) %>% 
    ggplot(aes(price, fill = room_type)) +
-   geom_histogram(binwidth = 28) +
+   geom_histogram(binwidth = 14) +
    theme_classic() +
    scale_fill_brewer(palette = "PuBuGn") +
    scale_x_continuous(name ="Price per night in $", breaks = seq(0, max.x.2.1, by = 100)) +
@@ -210,10 +215,16 @@ f1.hawa <- hawa_list %>% dplyr::filter(price > 0 & price <= max.x.2.1) %>% filte
 gridExtra::grid.arrange(f1.bos, f1.ny, f1.la, f1.hawa, nrow = 2)
 ```
 
-rrrrrrr
+By just looking at this plot, I can tell that the overall number of listings in Boston is not significant compared to the other cities.  
+
+And, the proportion of shared room from the total Airbnb listings in NYC is larger than any other cities in this group.  
+
+## What else the number of reviews for the listings can tell related to the price?
+
+- Check how the number of reviews and the price are related to one another.
 
 ## Figure 2.1 (Boston)
-```{r echo=FALSE,message=FALSE, warning=FALSE, fig.width=7, fig.height=4}
+```{r echo=FALSE,message=FALSE, warning=FALSE, fig.width=7, fig.height=5}
 bos_list %>% dplyr::filter(price > 0) %>% filter(!is.na(price)) %>%
   filter(room_type %in% c("Private room", "Entire home/apt","Shared room")) %>%
   filter(!is.na(price)) %>%
@@ -241,7 +252,7 @@ ny_list %>% dplyr::filter(price > 0) %>% filter(!is.na(price)) %>%
 ```
 
 ## Figure 2.3 (Los Angeles)
-```{r echo=FALSE,message=FALSE, warning=FALSE, fig.width=7, fig.height=4}
+```{r echo=FALSE,message=FALSE, warning=FALSE, fig.width=7, fig.height=5}
 la_list %>% dplyr::filter(price > 0) %>% filter(!is.na(price)) %>%
   filter(room_type %in% c("Private room", "Entire home/apt","Shared room")) %>%
   filter(!is.na(price)) %>%
@@ -255,7 +266,7 @@ la_list %>% dplyr::filter(price > 0) %>% filter(!is.na(price)) %>%
 ```
 
 ## Figure 2.4 (Hawaii)
-```{r echo=FALSE,message=FALSE, warning=FALSE, fig.width=7, fig.height=4}
+```{r echo=FALSE,message=FALSE, warning=FALSE, fig.width=7, fig.height=5}
 hawa_list %>% dplyr::filter(price > 0) %>% filter(!is.na(price)) %>%
   filter(room_type %in% c("Private room", "Entire home/apt","Shared room")) %>%
   filter(!is.na(price)) %>%
@@ -316,17 +327,18 @@ f2.hawa <- hawa_list %>% dplyr::filter(price > 0) %>% filter(!is.na(price)) %>%
 
 gridExtra::grid.arrange(f2.bos, f2.ny, f2.la, f2.hawa, nrow = 2)
 ```
+
 ## Figure 2.5 (combined)
 
 -For all of the cities, the price with the most number of reviews is approximately $exp(5)=148.4132$.  
 
 -Therefore, the most popular Airbnb listings are roughly around \$148.41 per day in all four cities.
 
-## Most crowded neighborhoods with Airbnb Listings
+## Most crowded neighborhoods with Airbnb listings
 
-- Check which neighborhood has the most number of Airbnb listings is Boston, New York, Los Angeles, and Hawaii.
+- Check which neighborhood has the largest number of Airbnb listings among Boston, New York, Los Angeles, and Hawaii.
 
-- Create tables and plots to better check the data.
+- Create tables and plots to check the data better.
 
 ## Neighborhoods with the most number of Airbnb listings (Boston)
 ```{r echo=FALSE, fig.height=2, fig.width=4, message=FALSE, warning=FALSE}
@@ -424,9 +436,9 @@ max.x <- 10000
 
 ## Figure 3 | Number of Airbnb listings (BOS, NYC, LA, HAWA)
 
-- From the plots, I can see how the Airbnb listings are distriubted over the neighbourhoods in Boston, New York, Los Angeles, and Hawaii.
+- From the plots, I can see how Airbnb listings are distributed over the neighborhoods in Boston, New York, Los Angeles, and Hawaii.
 
-- For Boston, the most of the airbnb listings are crowded in Dorchester, Downtown and South End. Also, Primary Urban Center in Hawaii has the most number of Airbnb listings. 
+- For Boston, most of the Airbnb listings are crowded in Dorchester, Downtown, and South End. Also, the Primary Urban Center in Hawaii has the most number of Airbnb listings.  
 
 ## Figure 4 | Number of Airbnb reviews over the neighborhoods
 
@@ -495,7 +507,8 @@ max.x <- 10000
 ```
 
 ## Figure 4 | Number of Airbnb reviews over the neighborhoods
-_d_
+
+- It can be infered from the plot that the higher number of reviews the neighborhood has, the more the neighborhood is popular among the tourists.  
 
 # Text Analysis
 
@@ -551,5 +564,7 @@ wordcloud(wordfreq_hawa$word, freq = wordfreq_hawa$n, scale=c(3, 0.9), max.words
 ## Mapping with shiny
 
 - The interactive map for Airbnb listings in Boston is included in the shiny app.
+
+# End.
 
 
