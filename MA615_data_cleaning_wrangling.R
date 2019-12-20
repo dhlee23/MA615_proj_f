@@ -1,42 +1,42 @@
-# Data Cleaning and Wrangling
-
+## Dae Hyun Lee
+## MA615 
+# Data Cleaning and Wrangling Process
+#
 #-----------------------------------------------------------------------------------------
 pacman::p_load("ggplot2","tidyverse","dplyr","tidyr","tinytex","magrittr","DT","readxl",
-               "shiny","shinydashboard","plotly","readxl","abind","gridExtra","scales")
-
-library(leaflet)
-library(RColorBrewer)
-library(scales)
-library(lattice)
-library(dplyr)
+               "shiny","shinydashboard","plotly","readxl","abind","gridExtra","scales",
+               "leaflet", "RColorBrewer", "scales", "lattice")
 #-----------------------------------------------------------------------------------------
+# Read csv file.
+# review data contain the review comments for the Airbnb listings.
+# listing file 
 
 # Boston
-bos_review <- read_csv("/Users/daylelee/Desktop/MA 615 - R/MA615__Git_Repository/MA615_proj_f/Data/Boston/reviews-1.csv")
-bos_cal <- read_csv("/Users/daylelee/Desktop/MA 615 - R/MA615__Git_Repository/MA615_proj_f/Data/Boston/calendar.csv")
-bos_list <- read_csv("/Users/daylelee/Desktop/MA 615 - R/MA615__Git_Repository/MA615_proj_f/Data/Boston/listings.csv")
-bos_nei <- read_csv("/Users/daylelee/Desktop/MA 615 - R/MA615__Git_Repository/MA615_proj_f/Data/Boston/neighbourhoods.csv")
+bos_review <- read_csv("/Users/daylelee/Desktop/MA615_proj_f/Data/Boston/reviews-1.csv")
+bos_cal <- read_csv("/Users/daylelee/Desktop/MA615_proj_f/Data/Boston/calendar.csv")
+bos_list <- read_csv("/Users/daylelee/Desktop/MA615_proj_f/Data/Boston/listings.csv")
+bos_nei <- read_csv("/Users/daylelee/Desktop/MA615_proj_f/Data/Boston/neighbourhoods.csv")
 
 # NYC
-ny_review <- read_csv("/Users/daylelee/Desktop/MA 615 - R/MA615__Git_Repository/MA615_proj_f/Data/NYC/reviews-1.csv")
-ny_cal <- read_csv("/Users/daylelee/Desktop/MA 615 - R/MA615__Git_Repository/MA615_proj_f/Data/NYC/calendar.csv")
-ny_list <- read_csv("/Users/daylelee/Desktop/MA 615 - R/MA615__Git_Repository/MA615_proj_f/Data/NYC/listings.csv")
-ny_nei <- read_csv("/Users/daylelee/Desktop/MA 615 - R/MA615__Git_Repository/MA615_proj_f/Data/NYC/neighbourhoods.csv")
+ny_review <- read_csv("/Users/daylelee/Desktop/MA615_proj_f/Data/NYC/reviews-1.csv")
+ny_cal <- read_csv("/Users/daylelee/Desktop/MA615_proj_f/Data/NYC/calendar.csv")
+ny_list <- read_csv("/Users/daylelee/Desktop/MA615_proj_f/Data/NYC/listings.csv")
+ny_nei <- read_csv("/Users/daylelee/Desktop/MA615_proj_f/Data/NYC/neighbourhoods.csv")
 
 # Hawaii
-hawa_review <- read_csv("/Users/daylelee/Desktop/MA 615 - R/MA615__Git_Repository/MA615_proj_f/Data/Hawaii/reviews-1.csv")
-hawa_cal <- read_csv("/Users/daylelee/Desktop/MA 615 - R/MA615__Git_Repository/MA615_proj_f/Data/Hawaii/calendar.csv")
-hawa_list <- read_csv("/Users/daylelee/Desktop/MA 615 - R/MA615__Git_Repository/MA615_proj_f/Data/Hawaii/listings.csv")
-hawa_nei <- read_csv("/Users/daylelee/Desktop/MA 615 - R/MA615__Git_Repository/MA615_proj_f/Data/Hawaii/neighbourhoods.csv")
+hawa_review <- read_csv("/Users/daylelee/Desktop/MA615_proj_f/Data/Hawaii/reviews-1.csv")
+hawa_cal <- read_csv("/Users/daylelee/Desktop/MA615_proj_f/Data/Hawaii/calendar.csv")
+hawa_list <- read_csv("/Users/daylelee/Desktop/MA615_proj_f/Data/Hawaii/listings.csv")
+hawa_nei <- read_csv("/Users/daylelee/Desktop/MA615_proj_f/Data/Hawaii/neighbourhoods.csv")
 
 # LA
-la_review <- read_csv("/Users/daylelee/Desktop/MA 615 - R/MA615__Git_Repository/MA615_proj_f/Data/LA/reviews-1.csv")
-la_cal <- read_csv("/Users/daylelee/Desktop/MA 615 - R/MA615__Git_Repository/MA615_proj_f/Data/LA/calendar.csv")
-la_list <- read_csv("/Users/daylelee/Desktop/MA 615 - R/MA615__Git_Repository/MA615_proj_f/Data/LA/listings.csv")
-la_nei <- read_csv("/Users/daylelee/Desktop/MA 615 - R/MA615__Git_Repository/MA615_proj_f/Data/LA/neighbourhoods.csv")
+la_review <- read_csv("/Users/daylelee/Desktop/MA615_proj_f/Data/LA/reviews-1.csv")
+la_cal <- read_csv("/Users/daylelee/Desktop/MA615_proj_f/Data/LA/calendar.csv")
+la_list <- read_csv("/Users/daylelee/Desktop/MA615_proj_f/Data/LA/listings.csv")
+la_nei <- read_csv("/Users/daylelee/Desktop/MA615_proj_f/Data/LA/neighbourhoods.csv")
 
 #-----------------------------------------------------------------------------------------
-
+# Select the variables of my interest.
 #-----------------------------------------------------------------------------------
 bos_list <- bos_list %>%
   select(
@@ -106,9 +106,10 @@ hawa_list <- hawa_list %>%
   ) %>%
   mutate(region = "HAWA")
 
+# Combine the four datasets into one.
 com_list <- rbind(bos_list, ny_list, la_list, hawa_list)
 #-------------------------------------------------------------------
-# save listing data as RDATA and csv
+# Save listing data as RDATA and csv
 save(bos_list, file = "bos_data_list.RData")
 write.csv(bos_list, file = "bos_data_list.csv")
 save(ny_list, file = "ny_data_list.RData")
@@ -132,7 +133,7 @@ bos_review2 <- bos_review %>% sample_n(3000)
 ny_review2 <- ny_review %>% sample_n(3000)
 la_review2 <- la_review %>% sample_n(3000)
 hawa_review2 <- hawa_review %>% sample_n(3000)
-# save data_review2 for all four -----------------------------------
+# save data_review2 for all four cities-----------------------------
 save(bos_review2, file = "bos_data_review2.RData")
 save(la_review2, file = "la_data_review2.RData")
 save(ny_review2, file = "ny_data_review2.RData")
